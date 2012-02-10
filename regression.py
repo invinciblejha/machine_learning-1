@@ -9,24 +9,31 @@ def readInputData(input_file):
     y = []
     for row in data_reader:
         X.append(float(row[0]))
-        y.append(row[1])
+        y.append(float(row[1]))
     return (X, y)
 
 def computeCost(X, y, theta):
-    pass
+    m = len(y)
+    cost = 0
+    for i in range(0, m):
+        cost = cost + (theta[0] + theta[1]*X[i] - y[i])**2
+    
+    cost = cost / (2*m)
+    return cost
     
 def gradientDescent():
     pass
     
 if __name__ == "__main__":
-    (X1, y) = readInputData('ex1data1.txt')
+    (X, y) = readInputData('ex1data1.txt')
     m = len(y) 
     
     # Add a column of ones to X
-    X = [numpy.ones((len(X1))), X1]
+    #X = [numpy.ones((len(X1))), X1]
     theta = numpy.zeros((2, 1))
 
     # Compute initial cost
-    computeCost(X, y, theta)
+    cost = computeCost(X, y, theta)
+    print cost
 
     #theta = gradientDescent(X, y, theta, alpha, iterations);
