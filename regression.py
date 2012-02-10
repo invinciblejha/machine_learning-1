@@ -1,7 +1,7 @@
 import csv, numpy
 
-ITERATIONS = 1500;
-ALPHA = 0.01;
+ITERATIONS = 1500
+ALPHA = 0.01
 
 def readInputData(input_file):
     data_reader = csv.reader(open(input_file, 'rb'), delimiter=',')
@@ -21,8 +21,24 @@ def computeCost(X, y, theta):
     cost = cost / (2*m)
     return cost
     
-def gradientDescent():
-    pass
+def gradientDescent(X, y, theta):
+    m = len(y)
+    J_history = numpy.zeros((ITERATIONS, 1))
+
+    for iter in range(1, ITERATIONS):
+        # Perform a single gradient step on the parameter vector
+        sum0 = 0
+        sum1 = 0
+        for i in range(1, m):
+            sum0 = sum0 + theta[0] + theta[1]*X[i] - y[i]
+            sum1 = sum1 + (theta[0] + theta[1]*X[i] - y[i]) * X[i]
+        theta[0] = theta[0] - ALPHA * (1/float(m)) * sum0
+        theta[1] = theta[1] - ALPHA * (1/float(m)) * sum1
+
+        # Save the cost J in every iteration    
+        J_history[iter] = computeCost(X, y, theta)
+        #print J_history[iter]
+    return theta
     
 if __name__ == "__main__":
     (X, y) = readInputData('ex1data1.txt')
@@ -36,4 +52,5 @@ if __name__ == "__main__":
     cost = computeCost(X, y, theta)
     print cost
 
-    #theta = gradientDescent(X, y, theta, alpha, iterations);
+    theta = gradientDescent(X, y, theta)
+    print theta
