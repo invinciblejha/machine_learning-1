@@ -8,7 +8,7 @@ import csv, math, numpy, random
 
 ITERATIONS = 1500
 ALPHA = 0.01
-PROPORTION_FACTOR = float(1)/2 # This is the percentage of samples that will be "test" samples
+PROPORTION_FACTOR = float(1)/3 # This is the percentage of samples that will be "test" samples
 
 def  rename_y(initial_train_y, target_class):
     train_y = []
