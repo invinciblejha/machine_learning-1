@@ -1,47 +1,7 @@
-import csv, math, numpy, random
+import csv, datareader, math, numpy, random
 
 ITERATIONS = 1500
 ALPHA = 0.01
-PROPORTION_FACTOR = float(1)/3 # This is the percentage of samples that will be "test" samples
-
-def randomize_inputs(X, y):
-    sequence = range(len(y))
-    random.shuffle(sequence)
-
-    new_X = []
-    new_y = []
-    for i in sequence:
-        new_X.append(X[i])
-        new_y.append(y[i])
-    
-    return (new_X, new_y)
- 
-def readInputData(input_file):
-    data_reader = csv.reader(open(input_file, 'rb'), delimiter=',')
-    X = []
-    y = []
-    for row in data_reader:
-        line_x = []
-        line_x.append(float(row[0]))
-        line_x.append(float(row[1]))
-        line_x.append(float(row[2]))
-        line_x.append(float(row[3]))
-        X.append(line_x)
-        if row[4] == 'Iris-setosa':
-            y.append(1)
-        else:
-            y.append(0)
-    
-    (X, y) = randomize_inputs(X, y)
-    
-    m = len(y)
-    splice_index = int(m*PROPORTION_FACTOR)
-    train_X = X[splice_index:]
-    train_y = y[splice_index:]
-    test_X = X[:splice_index]
-    test_y = y[:splice_index]
-
-    return (train_X, train_y, test_X, test_y)
 
 def compute_hypothesis(X_row, theta):
     sum = 0
@@ -55,7 +15,7 @@ def computeCost(X, y, theta):
     cost = 0
     for i in range(0, m-1):
         h_theta = compute_hypothesis(X[i], theta)
-        cost = cost + (y[i] * math.log(h_theta) + (1- y[i])*math.log(1 - h_theta)) 
+        cost = cost + (y[i] * math.log(h_theta) + (1.0 - y[i]) * math.log(1.0 - h_theta)) 
     cost = float(cost) / (-m)
     return cost
     
@@ -82,10 +42,7 @@ def gradientDescent(X, y, theta):
     return theta
     
 def predict(X_row, theta):
-    sum = 0
-    for j in range(len(theta)):
-        sum += theta[j]*X_row[j]
-    predicted_y = float(1)/(1 + math.exp(-sum))
+    predicted_y = compute_hypothesis(X_row, theta)
     if predicted_y >= 0.5:
         return 1
     else:
@@ -95,15 +52,16 @@ def check_test_data(test_X, test_y, theta):
     correct = 0
     for i in range(len(test_X)):
         prediction = predict(test_X[i], theta)
+        #print "Predicted ", prediction, ", actual ", test_y[i]
         if prediction == test_y[i]:
             correct += 1
     print "Correct predictions: ", correct, "/", len(test_X)
     
 if __name__ == "__main__":
-    (train_X, train_y, test_X, test_y) = readInputData('iris.data')
+    (train_X, train_y, test_X, test_y) = datareader.readInputData('iris.data', '', ',', float(1)/5, True, [0, 1, 2, 3], 4, True, {'Iris-versicolor': 0, 'Iris-setosa': 0, 'Iris-virginica': 1})
     m = len(train_y)
-    
-    theta = [0] * len(train_X[0])
+
+    theta = [0.0] * len(train_X[0])
 
     # Compute initial cost
     cost = computeCost(train_X, train_y, theta)

@@ -30,29 +30,50 @@ def randomize_inputs(X, y):
     
     return (new_X, new_y)
  
-def readInputData(input_file, custom_delimiter, proportion_factor):
+def parse_input(input_file, custom_delimiter, input_columns, output_column, is_test, output_literal, output_label_mapping):
+    data_reader = csv.reader(open(input_file, 'rb'), delimiter=custom_delimiter)
+    
+    if not is_test:
+        X = []
+        y = []
+        for row in data_reader:
+            line_x = []
+            for i in input_columns:
+                line_x.append(float(row[i]))
+            X.append(line_x)
+            if output_literal:
+                y.append(float(output_label_mapping[row[output_column]]))
+            else:
+                y.append(float(row[output_column]))
+        
+        (X, y) = randomize_inputs(X, y)
+    else:
+        X = []
+        for row in data_reader:
+            line_x = []
+            for i in range(len(row)):
+                line_x.append(float(row[i]))
+            X.append(line_x)
+        
+        y = [0.0] * len(X) # Dummy y
+        (X, y) = randomize_inputs(X, y)
+    
+    return (X, y)
+
+def readInputData(input_file, input_test_file, custom_delimiter, proportion_factor, split, input_columns, output_column, output_literal, output_label_mapping):
     ''' Main method for parsing the input data. The input data is expected in CSV format, with a delimiter that can be specified as parameter.
     The method generates a random permutation of the read data to be safe in case the original raw data is nicely ordered.
     It uses the proportion_factor to determine how much data should be for training and how much for testing.
     '''
-    data_reader = csv.reader(open(input_file, 'rb'), delimiter=custom_delimiter)
-    X = []
-    y = []
-    for row in data_reader:
-        line_x = []
-        line_x.append(float(row[0]))
-        line_x.append(float(row[1]))
-        line_x.append(float(row[2]))
-        line_x.append(float(row[3]))
-        X.append(line_x)
-        y.append(row[4])
+    (X, y) = parse_input(input_file, custom_delimiter, input_columns, output_column, False, output_literal, output_label_mapping)
     
-    (X, y) = randomize_inputs(X, y)
-    
-    splice_index = int(len(y) * proportion_factor)
-    train_X = X[splice_index:]
-    train_y = y[splice_index:]
-    test_X = X[:splice_index]
-    test_y = y[:splice_index]
-
-    return (train_X, train_y, test_X, test_y)
+    if split:
+        splice_index = int(len(y) * proportion_factor)
+        train_X = X[splice_index:]
+        train_y = y[splice_index:]
+        test_X = X[:splice_index]
+        test_y = y[:splice_index]
+        return (train_X, train_y, test_X, test_y)
+    else: # Take test values from input_test_file -- we assume same format as input_file!
+        (test_X, test_y) = parse_input(input_test_file, custom_delimiter, input_columns, output_column, True, output_literal)
+        return (X, y, test_X, test_y)

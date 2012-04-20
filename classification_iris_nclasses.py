@@ -64,16 +64,16 @@ def check_test_data(test_X, test_y, thetas, classes):
     correct = 0
     for i in range(len(test_X)):        
         predicted_class = predict(test_X[i], thetas)
-        #print "Predicted: ", classes[predicted_class], ", Actual: ", test_y[i]
-        if classes[predicted_class] == test_y[i]:
+        #print "Predicted: ", predicted_class, ", Actual: ", test_y[i]
+        if predicted_class == test_y[i]:
             correct += 1
     print "Correct predictions: ", correct, "/", len(test_X)
     
 if __name__ == "__main__":
-    (train_X, initial_train_y, test_X, test_y) = datareader.readInputData('iris.data', ',', float(1)/3)
+    (train_X, initial_train_y, test_X, test_y) = datareader.readInputData('iris.data', '', ',', float(1)/3, True, [0, 1, 2, 3], 4, True, {'Iris-versicolor': 0, 'Iris-setosa': 1, 'Iris-virginica': 2})
     
     thetas = []
-    classes = ['Iris-setosa', 'Iris-versicolor', 'Iris-virginica']
+    classes = range(3)
     for target_class in classes:
         train_y = datareader.rename_y(initial_train_y, target_class)
         
