@@ -4,55 +4,10 @@ Logistic regression classification of N classes (one-vs-all method). Applied to 
 Author: AC Grama http://acgrama.blogspot.com
 Date: 20.04.2012
 '''
-import csv, math, numpy, random
+import math, numpy, random, datareader
 
 ITERATIONS = 1500
 ALPHA = 0.01
-PROPORTION_FACTOR = float(1)/3 # This is the percentage of samples that will be "test" samples
-
-def  rename_y(initial_train_y, target_class):
-    train_y = []
-    for i in range(len(initial_train_y)):
-        if initial_train_y[i] == target_class:
-            train_y.append(1)
-        else:
-            train_y.append(0)
-    return train_y
-
-def randomize_inputs(X, y):
-    sequence = range(len(y))
-    random.shuffle(sequence)
-
-    new_X = []
-    new_y = []
-    for i in sequence:
-        new_X.append(X[i])
-        new_y.append(y[i])
-    
-    return (new_X, new_y)
- 
-def readInputData(input_file):
-    data_reader = csv.reader(open(input_file, 'rb'), delimiter=',')
-    X = []
-    y = []
-    for row in data_reader:
-        line_x = []
-        line_x.append(float(row[0]))
-        line_x.append(float(row[1]))
-        line_x.append(float(row[2]))
-        line_x.append(float(row[3]))
-        X.append(line_x)
-        y.append(row[4])
-    
-    (X, y) = randomize_inputs(X, y)
-    
-    splice_index = int(len(y) * PROPORTION_FACTOR)
-    train_X = X[splice_index:]
-    train_y = y[splice_index:]
-    test_X = X[:splice_index]
-    test_y = y[:splice_index]
-
-    return (train_X, train_y, test_X, test_y)
 
 def compute_hypothesis(X_row, theta):
     sum = 0
@@ -115,12 +70,12 @@ def check_test_data(test_X, test_y, thetas, classes):
     print "Correct predictions: ", correct, "/", len(test_X)
     
 if __name__ == "__main__":
-    (train_X, initial_train_y, test_X, test_y) = readInputData('iris.data')
+    (train_X, initial_train_y, test_X, test_y) = datareader.readInputData('iris.data', ',', float(1)/3)
     
     thetas = []
     classes = ['Iris-setosa', 'Iris-versicolor', 'Iris-virginica']
     for target_class in classes:
-        train_y = rename_y(initial_train_y, target_class)
+        train_y = datareader.rename_y(initial_train_y, target_class)
         
         m = len(train_y)
         theta = [0] * len(train_X[0])
