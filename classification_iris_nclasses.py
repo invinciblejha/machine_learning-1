@@ -1,8 +1,14 @@
+'''
+Logistic regression classification of N classes (one-vs-all method). Applied to iris dataset.
+
+Author: AC Grama http://acgrama.blogspot.com
+Date: 20.04.2012
+'''
 import csv, math, numpy, random
 
 ITERATIONS = 1500
 ALPHA = 0.01
-PROPORTION_FACTOR = float(1)/4 # This is the percentage of samples that will be "test" samples
+PROPORTION_FACTOR = float(1)/2 # This is the percentage of samples that will be "test" samples
 
 def  rename_y(initial_train_y, target_class):
     train_y = []
