@@ -3,7 +3,7 @@ Helper class for parsing input data and generating train/test sets.
 Author: AC Grama http://acgrama.blogspot.com
 Date: 20.04.2012
 '''
-import csv, numpy, random
+import csv, random
 
 def  rename_y(initial_train_y, target_class):
     ''' Renames the labels to binary.
@@ -73,9 +73,7 @@ def readInputData(input_file, input_test_file, custom_delimiter, proportion_fact
         train_y = y[splice_index:]
         test_X = X[:splice_index]
         test_y = y[:splice_index]
-#        return (numpy.array(train_X).reshape(-1, len(train_X[0])), numpy.array(train_y).reshape(-1, 1), numpy.array(test_X).reshape(-1, len(train_X[0])), numpy.array(test_y).reshape(-1, 1))        
-        return (numpy.array(train_X), numpy.array(train_y).reshape(-1, 1), numpy.array(test_X), numpy.array(test_y).reshape(-1, 1))
+        return (train_X, train_y, test_X, test_y)
     else: # Take test values from input_test_file -- we assume same format as input_file!
         (test_X, test_y) = parse_input(input_test_file, custom_delimiter, input_columns, output_column, True, output_literal, output_label_mapping)
-#        return (numpy.array(X).reshape(-1, len(train_X[0])), numpy.array(y).reshape(-1, 1), numpy.array(test_X).reshape(-1, len(train_X[0])), numpy.array(test_y).reshape(-1, 1))
-        return (numpy.array(X), numpy.array(y).reshape(-1, 1), numpy.array(test_X), numpy.array(test_y).reshape(-1, 1))
+        return (X, y, test_X, test_y)
