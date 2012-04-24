@@ -67,6 +67,22 @@ def readInputData(input_file, input_test_file, custom_delimiter, proportion_fact
     ''' Main method for parsing the input data. The input data is expected in CSV format, with a delimiter that can be specified as parameter.
     The method generates a random permutation of the read data to be safe in case the original raw data is nicely ordered.
     It uses the proportion_factor to determine how much data should be for training and how much for testing.
+    
+    Args:
+        input_file: The file containing the input data.
+        input_test_file: The file containing the test data (if applicable).
+        custom_delimiter: The delimiter used in the input files.
+        proportion_factor: If there is no special input_test_file, a percentage of proportion_factor% from the input_file will be used as test data. The samples are randomly selected.
+        split: If true, the test data will be taken from input_file. Otherwise, from input_test_file.
+        input_columns: Which columns in the input data are inputs (X).
+        output_column: Which column in the input data is output value (y).
+        input_literal_columns: Which columns in the input data have a literal description and need to be mapped to custom numeric values.
+        input_label_mapping: Mapping for input literal columns.
+        output_literal: Boolean, shows whether output is literal or numeric.
+        output_label_mapping: Mapping for output literal column.
+    
+    Returns:
+        A set (train_X, train_y, test_X, test_y) containing training data and test data. The test_y array contains dummy values.
     '''
     (X, y) = parse_input(input_file, custom_delimiter, input_columns, output_column, False, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
     
