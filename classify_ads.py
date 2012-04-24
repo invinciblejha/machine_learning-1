@@ -1,13 +1,12 @@
 '''
-Logistic regression classification.
+Logistic regression classification on the "Internet Classification" data set (http://archive.ics.uci.edu/ml/datasets/Internet+Advertisements)
 Author: AC Grama http://acgrama.blogspot.com
-Date: 20.04.2012
+Date: 24.04.2012
 '''
 import math, numpy, random, scipy, datareader_nonvector, scipy.optimize, time
 
-LAMBDA2 = 10000
-LAMBDA1 = 100000
-FN_EVALS = 0
+LAMBDA2 = 0.2
+LAMBDA1 = 0.1
 
 def sigmoid(val):
     return 1.0 / (1.0 + numpy.e ** (-1.0 * val))
@@ -20,9 +19,6 @@ def compute_hypothesis(X_row, theta):
     return h_theta[0]
 
 def computeCost(theta, X, y):
-    global  FN_EVALS
-    FN_EVALS += 1
-    print "Function evaluation #", FN_EVALS
     new_theta = numpy.array(theta)
     new_X = numpy.array(X)
     new_y = numpy.array(y)
@@ -35,7 +31,7 @@ def computeCost(theta, X, y):
     cost = - 1 *  (1.0 / m) * (J.sum() + LAMBDA2 * J_reg2.sum() + LAMBDA1 * J_reg1.sum())
     print "Cost: ", cost
     return cost
-      
+       
 def predict(X_row, theta):
     predicted_y = compute_hypothesis(X_row, theta)
     if predicted_y >= 0.5:
@@ -56,14 +52,24 @@ if __name__ == "__main__":
     print "Started at: ", time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
     
     print "Parsing input data..."
-    (train_X, train_y, test_X, test_y) = datareader_nonvector.readInputData('train.csv', 'uniform_benchmark.csv', ',', 0, False, range(1, 1777), 0, False, {})
-    m = len(train_y)    
+    input_file = 'ad.data' 
+    input_test_file = ''
+    custom_delimiter = ',' 
+    proportion_factor = float(1)/3
+    split = True 
+    input_columns = range(1558) 
+    output_column = 1558
+    input_literal_columns = [0] * 1558
+    input_label_mapping = {}
+    output_literal = True
+    output_label_mapping = {'ad.':1, 'nonad.':0}
+    (train_X, train_y, test_X, test_y) = datareader_nonvector.readInputData(input_file, input_test_file, custom_delimiter, proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)   
     print "Parsing complete!\n"
     
     initial_values = numpy.zeros((len(train_X[0]), 1))
     myargs = (train_X, train_y)
     print "Beginning optimization of cost function..."
-    theta = scipy.optimize.fmin_bfgs(computeCost, x0=initial_values, args=myargs)
+    theta = scipy.optimize.fmin_bfgs(computeCost, x0=initial_values, args=myargs, maxiter=20, disp=True)
     print "Optimization complete!"
     
     print "Final theta: "

@@ -58,7 +58,7 @@ def check_test_data(test_X, test_y, theta):
     print "Correct predictions: ", correct, "/", len(test_X)
     
 if __name__ == "__main__":
-    (train_X, train_y, test_X, test_y) = datareader.readInputData('iris.data', '', ',', float(1)/5, True, [0, 1, 2, 3], 4, True, {'Iris-versicolor': 0, 'Iris-setosa': 0, 'Iris-virginica': 1})
+    (train_X, train_y, test_X, test_y) = datareader.readInputData('iris.data', '', ',', float(1)/5, True, range(4), 4, True, {'Iris-versicolor': 0, 'Iris-setosa': 0, 'Iris-virginica': 1})
     m = len(train_y)
 
     theta = [0.0] * len(train_X[0])

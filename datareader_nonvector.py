@@ -30,7 +30,7 @@ def randomize_inputs(X, y):
     
     return (new_X, new_y)
  
-def parse_input(input_file, custom_delimiter, input_columns, output_column, is_test, output_literal, output_label_mapping):
+def parse_input(input_file, custom_delimiter, input_columns, output_column, is_test, input_literal_columns, input_label_mapping, output_literal, output_label_mapping):
     data_reader = csv.reader(open(input_file, 'rb'), delimiter=custom_delimiter)
     
     if not is_test:
@@ -39,7 +39,10 @@ def parse_input(input_file, custom_delimiter, input_columns, output_column, is_t
         for row in data_reader:
             line_x = []
             for i in input_columns:
-                line_x.append(float(row[i]))
+                if input_literal_columns[i] == 1:
+                    line_x.append(float(input_label_mapping[i][row[i]]))
+                else:
+                    line_x.append(float(row[i]))
             X.append(line_x)
             if output_literal:
                 y.append(float(output_label_mapping[row[output_column]]))
@@ -60,12 +63,12 @@ def parse_input(input_file, custom_delimiter, input_columns, output_column, is_t
     
     return (X, y)
 
-def readInputData(input_file, input_test_file, custom_delimiter, proportion_factor, split, input_columns, output_column, output_literal, output_label_mapping):
+def readInputData(input_file, input_test_file, custom_delimiter, proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping):
     ''' Main method for parsing the input data. The input data is expected in CSV format, with a delimiter that can be specified as parameter.
     The method generates a random permutation of the read data to be safe in case the original raw data is nicely ordered.
     It uses the proportion_factor to determine how much data should be for training and how much for testing.
     '''
-    (X, y) = parse_input(input_file, custom_delimiter, input_columns, output_column, False, output_literal, output_label_mapping)
+    (X, y) = parse_input(input_file, custom_delimiter, input_columns, output_column, False, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
     
     if split:
         splice_index = int(len(y) * proportion_factor)
@@ -75,5 +78,5 @@ def readInputData(input_file, input_test_file, custom_delimiter, proportion_fact
         test_y = y[:splice_index]
         return (train_X, train_y, test_X, test_y)
     else: # Take test values from input_test_file -- we assume same format as input_file!
-        (test_X, test_y) = parse_input(input_test_file, custom_delimiter, input_columns, output_column, True, output_literal, output_label_mapping)
+        (test_X, test_y) = parse_input(input_test_file, custom_delimiter, input_columns, output_column, True, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
         return (X, y, test_X, test_y)

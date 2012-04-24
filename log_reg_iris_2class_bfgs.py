@@ -1,6 +1,6 @@
 import csv, datareader_nonvector, math, numpy, random, scipy.optimize
 
-LAMBDA = 1
+LAMBDA = 0.01
 
 def sigmoid(val):
     return 1.0 / (1.0 + numpy.e ** (-1.0 * val))
@@ -21,7 +21,7 @@ def computeCost(theta, X, y):
     new_h = numpy.array(h)
     J = new_y.T.dot(numpy.log(new_h)) + (1.0 - new_y.T).dot(numpy.log(1.0 - new_h)) # For each sample, a J_cost value
     J_reg = new_theta[1:]**2
-    cost = - 1 *  (1.0 / m) * (J.sum() + LAMBDA * J_reg.sum())
+    cost = (-1.0 / m) * (J.sum() + LAMBDA * J_reg.sum())
     print "Cost: ", cost
     return cost
       
@@ -42,7 +42,7 @@ def check_test_data(test_X, test_y, theta):
     print "Correct predictions: ", correct, "/", len(test_X)
 
 if __name__ == "__main__":
-    (train_X, train_y, test_X, test_y) = datareader_nonvector.readInputData('iris.data', '', ',', float(1)/5, True, [0, 1, 2, 3], 4, True, {'Iris-versicolor': 0, 'Iris-setosa': 0, 'Iris-virginica': 1})
+    (train_X, train_y, test_X, test_y) = datareader_nonvector.readInputData('iris.data', '', ',', float(1)/3, True, [0, 1, 2, 3], 4, True, {'Iris-versicolor': 1, 'Iris-setosa': 0, 'Iris-virginica': 0})
    
     initial_values = numpy.zeros((len(train_X[0]), 1))
     myargs = (train_X, train_y)
