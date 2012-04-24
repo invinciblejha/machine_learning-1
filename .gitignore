@@ -1,0 +1,9 @@
+# Input data files #
+##############
+*.data
+*.csv
+*.names
+
+# Compiled Python #
+################
+*.pyc
