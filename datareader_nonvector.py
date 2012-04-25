@@ -37,7 +37,7 @@ def parse_input(input_file, custom_delimiter, input_columns, output_column, is_t
         X = []
         y = []
         for row in data_reader:
-            line_x = []
+            line_x = [1] # Add the X0=1
             for i in input_columns:
                 if input_literal_columns[i] == 1:
                     line_x.append(float(input_label_mapping[i][row[i]]))
@@ -53,7 +53,7 @@ def parse_input(input_file, custom_delimiter, input_columns, output_column, is_t
     else:
         X = []
         for row in data_reader:
-            line_x = []
+            line_x = [1]
             for i in range(len(row)):
                 line_x.append(float(row[i]))
             X.append(line_x)
