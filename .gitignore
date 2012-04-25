@@ -1,8 +1,9 @@
 # Input data files #
 ##############
-*.data
 *.csv
+*.data
 *.names
+*.txt
 
 # Compiled Python #
 ################

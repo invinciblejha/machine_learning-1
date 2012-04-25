@@ -5,8 +5,14 @@ Date: 24.04.2012
 '''
 import math, numpy, random, scipy, datareader_nonvector, scipy.optimize, time
 
-LAMBDA2 = 0.2
-LAMBDA1 = 0.1
+iter = 0
+
+class TooManyIterationsException(Exception):
+    def __init__(self, value):
+        self.value = value
+        
+    def __str__(self):
+        return repr(self.value)
 
 def sigmoid(val):
     return 1.0 / (1.0 + numpy.e ** (-1.0 * val))
@@ -19,6 +25,10 @@ def compute_hypothesis(X_row, theta):
     return h_theta[0]
 
 def computeCost(theta, X, y):
+    global iter
+    iter += 1
+    if iter > 10:
+        raise TooManyIterationsException(iter)
     new_theta = numpy.array(theta)
     new_X = numpy.array(X)
     new_y = numpy.array(y)
@@ -28,8 +38,8 @@ def computeCost(theta, X, y):
     J = new_y.T.dot(numpy.log(new_h)) + (1.0 - new_y.T).dot(numpy.log(1.0 - new_h)) # For each sample, a J_cost value
     J_reg2 = new_theta[1:]**2
     J_reg1 = new_theta[1:]
-    cost = - 1 *  (1.0 / m) * (J.sum() + LAMBDA2 * J_reg2.sum() + LAMBDA1 * J_reg1.sum())
-    print "Cost: ", cost
+    cost = (-1.0 / m) * (J.sum()) + LAMBDA2 * J_reg2.sum() + LAMBDA1 * J_reg1.sum()
+    print "Iteration", iter, " - Cost: ", cost
     return cost
        
 def predict(X_row, theta):
@@ -47,6 +57,14 @@ def check_test_data(test_X, test_y, thetas, classes):
         if classes[predicted_class] == test_y[i]:
             correct += 1
     print "Correct predictions: ", correct, "/", len(test_X)
+    
+def lambdas_range():
+    my_range = [0.01]
+    current = 0.02
+    while current < 20:
+        my_range.append(current)
+        current *= 2
+    return my_range
     
 if __name__ == "__main__":
     print "Started at: ", time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
@@ -68,10 +86,19 @@ if __name__ == "__main__":
     
     initial_values = numpy.zeros((len(train_X[0]), 1))
     myargs = (train_X, train_y)
-    print "Beginning optimization of cost function..."
-    theta = scipy.optimize.fmin_bfgs(computeCost, x0=initial_values, args=myargs, maxiter=20, disp=True)
-    print "Optimization complete!"
+    global LAMBDA1, LAMBDA2
+    my_range = lambdas_range()
     
+    for LAMBDA1 in my_range:
+        for LAMBDA2 in my_range:
+            try:
+                iter = 0
+                print "Beginning optimization of cost function for LAMBDA1=", LAMBDA1, " and LAMBDA2=", LAMBDA2
+                theta = scipy.optimize.fmin_bfgs(computeCost, x0=initial_values, args=myargs)            
+                print "Optimization complete!"
+            except TooManyIterationsException as e:
+                print "\n"
+            
     print "Final theta: "
     print theta
 
