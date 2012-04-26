@@ -51,7 +51,7 @@ def plot_data(X, y):
     plt.set_cmap(plt.cm.Paired)
     fig1 = plt.figure(1)
     title = plt.title("PCA on iris dataset")
-    plot = plt.scatter(z[:, 0], z[:, 1], c=y)
+    plot = plt.scatter(z[:, 1], z[:, 0], c=y)
     labx = plt.xlabel("First component")
     laby = plt.ylabel("Second component")
     plt.show()
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     input_literal_columns = [0] * 4
     input_label_mapping = {}
     output_literal = True
-    output_label_mapping = {'Iris-versicolor': 0, 'Iris-setosa': 0, 'Iris-virginica': 1}
+    output_label_mapping = {'Iris-versicolor': 1, 'Iris-setosa': 0, 'Iris-virginica': 0}
     (train_X, train_y, test_X, test_y) = datareader.readInputData(input_file, input_test_file, custom_delimiter, 
         proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
     print "Parsing complete!\n"
