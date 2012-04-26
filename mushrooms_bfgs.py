@@ -5,8 +5,8 @@ Date: 24.04.2012
 '''
 import csv, datareader, math, numpy, random, scipy.optimize
 
-LAMBDA1 = 0#0.1
-LAMBDA2 = 0#0.2
+LAMBDA1 = 0
+LAMBDA2 = 0
 
 def sigmoid(val):
     return 1.0 / (1.0 + numpy.e ** (-1.0 * val))
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     output_literal = True
     output_label_mapping = {'p':1, 'e':0}
    
-    (train_X, train_y, test_X, test_y) = datareader_nonvector.readInputData(input_file, input_test_file, custom_delimiter, proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
+    (train_X, train_y, test_X, test_y) = datareader.readInputData(input_file, input_test_file, custom_delimiter, proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
    
     initial_values = numpy.zeros((len(train_X[0]), 1))
     myargs = (train_X, train_y)
