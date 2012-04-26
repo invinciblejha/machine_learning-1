@@ -6,7 +6,7 @@ Date: 20.04.2012
 import csv, numpy, random
 
 def  rename_y(initial_train_y, target_class):
-    ''' Renames the labels to binary.
+    ''' In case we are doing one-vs-all classification, this function will set the category for samples from the target class to "1" and for samples from any other classes to "0"
     '''
     train_y = []
     for i in range(len(initial_train_y)):
@@ -31,6 +31,8 @@ def randomize_inputs(X, y):
     return (new_X, new_y)
  
 def parse_input(input_file, custom_delimiter, input_columns, output_column, is_test, input_literal_columns, input_label_mapping, output_literal, output_label_mapping):
+    ''' This function parses the input data file.
+    '''
     data_reader = csv.reader(open(input_file, 'rb'), delimiter=custom_delimiter)
     
     if not is_test:
