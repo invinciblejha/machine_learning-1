@@ -7,6 +7,10 @@ import csv, numpy, random
 
 def  rename_y(initial_train_y, target_class):
     ''' In case we are doing one-vs-all classification, this function will set the category for samples from the target class to "1" and for samples from any other classes to "0"
+    
+    Args:
+        initial_train_y: the full set of classes for the training set
+        target_class: the class which is the target in a particular iteration of one-vs-all classification.
     '''
     train_y = []
     for i in range(len(initial_train_y)):
