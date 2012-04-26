@@ -14,7 +14,7 @@ def  rename_y(initial_train_y, target_class):
             train_y.append(1)
         else:
             train_y.append(0)
-    return train_y
+    return numpy.array(train_y)
 
 def randomize_inputs(X, y):
     ''' Randomizes the input samples, just in case they are neatly ordered in the raw form.

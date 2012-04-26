@@ -4,7 +4,7 @@ Logistic regression classification of N classes (one-vs-all method). Applied to 
 Author: AC Grama http://acgrama.blogspot.com
 Date: 20.04.2012
 '''
-import math, numpy, random, datareader
+import math, numpy, random, scipy, scipy.optimize, datareader
 
 LAMBDA1 = 0.01
 LAMBDA2 = 0.02
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     print "Parsing complete!\n"
     
     print "Optimizing...\n"
-    
+    initial_train_y = train_y
     thetas = []
     classes = range(3)
     for target_class in classes:
