@@ -3,7 +3,7 @@ Logistic regression classification on the "Mushrooms" data set (http://archive.i
 Author: AC Grama http://acgrama.blogspot.com
 Date: 24.04.2012
 '''
-import csv, datareader_nonvector, math, numpy, random, scipy.optimize
+import csv, datareader, math, numpy, random, scipy.optimize
 
 LAMBDA1 = 0#0.1
 LAMBDA2 = 0#0.2
@@ -69,7 +69,7 @@ if __name__ == "__main__":
    
     initial_values = numpy.zeros((len(train_X[0]), 1))
     myargs = (train_X, train_y)
-    theta = scipy.optimize.fmin_bfgs(computeCost, x0=initial_values, args=myargs, maxiter=50, disp=True)
+    theta = scipy.optimize.fmin_bfgs(computeCost, x0=initial_values, args=myargs)
 
     print "Final theta: "
     print theta
