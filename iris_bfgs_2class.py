@@ -4,7 +4,7 @@ Uses scipy,optimize.fmin_bfgs for minimizing the cost function.
 Author: AC Grama http://acgrama.blogspot.com
 Date: 24.04.2012
 '''
-import csv, datareader, math, numpy, random, scipy.optimize
+import csv, datareader, math, mlpy, matplotlib.pyplot as plt, numpy, random, scipy.optimize
 
 LAMBDA1 = 0.01
 LAMBDA2 = 0.02
@@ -43,6 +43,19 @@ def check_test_data(test_X, test_y, theta):
             correct += 1
     print "Correct predictions: ", correct, "/", len(test_X)
 
+def plot_data(X, y):
+    pca = mlpy.PCA() # new PCA instance
+    pca.learn(X) # learn from data
+    z = pca.transform(X, k=2) # embed x into the k=2 dimensional subspace
+
+    plt.set_cmap(plt.cm.Paired)
+    fig1 = plt.figure(1)
+    title = plt.title("PCA on iris dataset")
+    plot = plt.scatter(z[:, 0], z[:, 1], c=y)
+    labx = plt.xlabel("First component")
+    laby = plt.ylabel("Second component")
+    plt.show()
+    
 if __name__ == "__main__":
     print "Parsing input data..."
     
@@ -61,6 +74,8 @@ if __name__ == "__main__":
         proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
     print "Parsing complete!\n"
     
+    plot_data(train_X, train_y)
+        
     print "Optimizing...\n"
     initial_thetas = numpy.zeros((train_X.shape[1], 1))
     myargs = (train_X, train_y)
