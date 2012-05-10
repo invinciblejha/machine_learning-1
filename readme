@@ -1,1 +1,6 @@
-Implementing various ML algorithms, mainly to fixate knowledge gathered from Stanford ML class and go beyond.
+Author: AC Grama http://acgrama.blogspot.com
+Contents: Implementations for various ML algorithms, mainly to fixate knowledge gathered from Stanford ML class and go beyond.
+Language: Python 2.7
+How to run: 
+1. Download data set mentioned in file header and copy it to same folder as python file.
+2. Run "python filename.py" in the shell.
