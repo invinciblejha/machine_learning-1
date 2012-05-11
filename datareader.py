@@ -11,6 +11,9 @@ def  rename_y(initial_train_y, target_class):
     Args:
         initial_train_y: the full set of classes for the training set
         target_class: the class which is the target in a particular iteration of one-vs-all classification.
+        
+    Returns:
+        A vector containing the categories for all the samples, in which the category for samples from the target class is "1" and for samples from any other classes is "0".
     '''
     train_y = []
     for i in range(len(initial_train_y)):
@@ -22,6 +25,13 @@ def  rename_y(initial_train_y, target_class):
 
 def randomize_inputs(X, y):
     ''' Randomizes the input samples, just in case they are neatly ordered in the raw form.
+    
+    Args:
+        X: data samples
+        y: outputs for the data samples in X
+        
+    Returns:
+        The shuffled input data samples.
     '''
     sequence = range(len(y))
     random.shuffle(sequence)
@@ -36,6 +46,20 @@ def randomize_inputs(X, y):
  
 def parse_input(input_file, custom_delimiter, input_columns, output_column, is_test, input_literal_columns, input_label_mapping, output_literal, output_label_mapping):
     ''' This function parses the input data file.
+    
+    Args:
+        input_file: The file containing the input data.
+        custom_delimiter: The delimiter used in the input files.
+        input_columns: Which columns in the input data are inputs (X).
+        output_column: Which column in the input data is output value (y).
+        is_test: Set to True if we are parsing input from a test set.
+        input_literal_columns: Which columns in the input data have a literal description and need to be mapped to custom numeric values.
+        input_label_mapping: Mapping for input literal columns.
+        output_literal: Boolean, shows whether output is literal or numeric.
+        output_label_mapping: Mapping for output literal column.
+    
+    Returns:
+        A set (X, y) containing the input data.    
     '''
     data_reader = csv.reader(open(input_file, 'rb'), delimiter=custom_delimiter)
     
