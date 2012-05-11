@@ -4,12 +4,7 @@ Language: Python 2.7
 
 How to run: 
 
-1. Select a file:
-- ads_bfgs.py Logistic regression classification on the "Internet Classification" data set
-- iris_bfgs_2class.py Logistic regression classification on the "Iris" data set, discriminates 1-vs-rest
-- iris_bfgs_nclass.py Logistic regression classification on the "Iris" data set, discriminates all 3 classes
-- iris_gradient_2class.py Logistic regression classification on the "Iris" data set, with gradient descent manually implemented
-- mushrooms_bfgs.py Logistic regression classification on the "Mushroom" data set
+1. Select a file from algorithm_list.txt
 
 2. Download data set mentioned in file header and copy it to same folder as python file.
 

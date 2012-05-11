@@ -44,6 +44,8 @@ def parse_input(input_file, custom_delimiter, input_columns, output_column, is_t
         y = []
         for row in data_reader:
             line_x = [1] # Add the X0=1
+            while '' in row:
+                row.remove("")
             for i in input_columns:
                 if input_literal_columns[i] == 1:
                     line_x.append(float(input_label_mapping[i][row[i]]))
