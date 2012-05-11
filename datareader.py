@@ -50,13 +50,13 @@ def parse_input(input_file, custom_delimiter, input_columns, output_column, is_t
     Args:
         input_file: The file containing the input data.
         custom_delimiter: The delimiter used in the input files.
-        input_columns: Which columns in the input data are inputs (X).
+        input_columns: Which columns in the input data are inputs (X). If input_columns is empty, the data samples have variable length.
         output_column: Which column in the input data is output value (y).
         is_test: Set to True if we are parsing input from a test set.
         input_literal_columns: Which columns in the input data have a literal description and need to be mapped to custom numeric values.
         input_label_mapping: Mapping for input literal columns.
         output_literal: Boolean, shows whether output is literal or numeric.
-        output_label_mapping: Mapping for output literal column.
+        output_label_mapping: Mapping for output literal column. If this is empty and output_literal=True, it means that we have some clustering task where every sample has a specific output -- the outputs will be marked 0, 1, etc.
     
     Returns:
         A set (X, y) containing the input data.    
@@ -66,20 +66,30 @@ def parse_input(input_file, custom_delimiter, input_columns, output_column, is_t
     if not is_test:
         X = []
         y = []
+        index = 0
         for row in data_reader:
             line_x = [1] # Add the X0=1
             while '' in row:
                 row.remove("")
-            for i in input_columns:
-                if input_literal_columns[i] == 1:
-                    line_x.append(float(input_label_mapping[i][row[i]]))
+            if input_columns != []:
+                for i in input_columns:
+                    if input_literal_columns[i] == 1:
+                        line_x.append(float(input_label_mapping[i][row[i]]))
+                    else:
+                        line_x.append(float(row[i]))
+                X.append(line_x)
+                if output_literal:
+                    if output_label_mapping != {}:
+                        y.append(float(output_label_mapping[row[output_column]]))
+                    else:
+                        y.append(index)
+                        index += 1
                 else:
-                    line_x.append(float(row[i]))
-            X.append(line_x)
-            if output_literal:
-                y.append(float(output_label_mapping[row[output_column]]))
+                    y.append(float(row[output_column]))
             else:
-                y.append(float(row[output_column]))
+                for i in range(len(row)):
+                    line_x.append(float(row[i]))
+                X.append(line_x)
         
         (X, y) = randomize_inputs(X, y)
     else:
