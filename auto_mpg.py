@@ -1,7 +1,7 @@
 '''
 Linear regression on the "Auto MPG" data set (http://archive.ics.uci.edu/ml/datasets/Auto+MPG)
 The model is optimized by applying the BFGS method.
-The optimized model is applied for each sample in the test set; the difference between the predicted value and the true value is computed as: abs(predicted_value - actual_value))/100
+The optimized model is applied for each sample in the test set and the RMSE is computed.
 
 Author: AC Grama http://acgrama.blogspot.com
 Date: 01.05.2012
@@ -54,18 +54,22 @@ def predict(X_row, theta):
     
 def check_test_data(test_X, test_y, theta):
     ''' This method applies the optimized model to the test data set, with the theta values found after optimizing the cost function. 
-    In this case, for each sample in the test set, the difference between the predicted value and the true value is computed as:
-    abs(predicted_value - actual_value))/100
+    Prints out the RMSE.
     
     Args:
         test_X: the test data set
         test_y: the test set's true results
         theta: vector containing the theta values
     '''        
+    sum = 0
     for i in range(len(test_X)):
         prediction = predict(test_X[i], theta)
-        delta = float(math.fabs(prediction - test_y[i]))/100
-        print "Predicted value= %.2f" % prediction, ", actual value= ", test_y[i], ", difference in percents of actual value=%.3f" % delta
+        sum += (prediction - test_y[i])**2
+#        delta = float(math.fabs(prediction - test_y[i]))/100
+#        print "Predicted value= %.2f" % prediction, ", actual value= ", test_y[i], ", difference in percents of actual value=%.3f" % delta
+    sum /= test_X.shape[0]
+    rmse = math.sqrt(sum)
+    print "Root Mean Squared Error= %.2f" % rmse
     
 if __name__ == "__main__":
     print "Parsing input data..."
