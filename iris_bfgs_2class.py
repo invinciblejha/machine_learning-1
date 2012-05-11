@@ -11,14 +11,41 @@ LAMBDA1 = 0.01
 LAMBDA2 = 0.02
 
 def sigmoid(val):
+    ''' This method computes the sigmoid function value for the given parameter
+    
+    Args:
+        val: input parameter
+        
+    Returns:
+        The value of the sigmoid function for the given parameter.
+    '''
     return 1.0 / (1.0 + numpy.e ** (-1.0 * val))
     
 def compute_hypothesis(X_row, theta):
+    ''' This method computes the hypothesis for the sample X_row, with the current theta values.
+    
+    Args:
+        X_row: a sample from the data set
+        theta: vector containing the theta values
+        
+    Returns:
+        The value of the hypothesis for the given data sample and theta values.
+    '''
     theta.shape = (1, X_row.size)
     h_theta = sigmoid(X_row.dot(theta.T))
     return h_theta[0]
 
 def computeCost(theta, X, y):
+    ''' This method computes the cost for the data set X and theta values w.r.t. the target values y
+    
+    Args:
+        X: the data set
+        theta: vector containing the theta values
+        y: vector containing the true cost for the samples in the data set
+
+    Returns:
+        A vector containing cost values for each sample in X, for the given theta values and true costs in y.
+    '''
     m = y.size
     h = sigmoid(X.dot(theta.T))
     
@@ -29,6 +56,15 @@ def computeCost(theta, X, y):
     return cost
       
 def predict(X_row, theta):
+    ''' This method applies the optimized model to the sample X_row, with the theta values found after optimizing the cost function, to predict the result.
+    
+    Args:
+        X_row: a sample from the data set
+        theta: vector containing the theta values
+        
+    Returns:
+        The class predicted for the sample in X_row, using the given theta values.
+    '''
     predicted_y = compute_hypothesis(X_row, theta)
     if predicted_y >= 0.5:
         return 1
@@ -36,10 +72,17 @@ def predict(X_row, theta):
         return 0
     
 def check_test_data(test_X, test_y, theta):
+    ''' This method applies the optimized model to the test data set, with the theta values found after optimizing the cost function. 
+    
+    Args:
+        test_X: the test data set
+        test_y: the test set's true results
+        theta: vector containing the theta values
+    '''   
     correct = 0
     for i in range(len(test_X)):
         prediction = predict(test_X[i], theta)
-        print "Predicted ", prediction, ", actual ", test_y[i]
+        #print "Predicted ", prediction, ", actual ", test_y[i]
         if prediction == test_y[i]:
             correct += 1
     print "Correct predictions: ", correct, "/", len(test_X)
