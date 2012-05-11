@@ -4,7 +4,7 @@ Language: Python 2.7
 
 How to run: 
 
-1. Select a file from algorithm_list.txt
+1. Select a file from algorithm_list
 
 2. Download data set mentioned in file header and copy it to same folder as python file.
 
