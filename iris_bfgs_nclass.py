@@ -6,28 +6,60 @@ Date: 20.04.2012
 '''
 import math, numpy, random, scipy, scipy.optimize, datareader
 
-LAMBDA1 = 0.01
-LAMBDA2 = 0.02
-
 def sigmoid(val):
+    ''' This method computes the sigmoid function value for the given parameter
+    
+    Args:
+        val: input parameter
+        
+    Returns:
+        The value of the sigmoid function for the given parameter.
+    '''
     return 1.0 / (1.0 + numpy.e ** (-1.0 * val))
     
 def compute_hypothesis(X_row, theta):
+    ''' This method computes the hypothesis for the sample X_row, with the current theta values.
+    
+    Args:
+        X_row: a sample from the data set
+        theta: vector containing the theta values
+        
+    Returns:
+        The value of the hypothesis for the given data sample and theta values.
+    '''
     theta.shape = (1, X_row.size)
     h_theta = sigmoid(X_row.dot(theta.T))
     return h_theta[0]
 
 def computeCost(theta, X, y):
+    ''' This method computes the cost for the data set X and theta values w.r.t. the target values y
+    
+    Args:
+        X: the data set
+        theta: vector containing the theta values
+        y: vector containing the true cost for the samples in the data set
+
+    Returns:
+        A vector containing cost values for each sample in X, for the given theta values and true costs in y.
+    '''
     m = y.size
-    h = sigmoid(X.dot(theta.T)) # For each sample, a h_theta value
+    h = sigmoid(X.dot(theta.T))
     
     J =  y.T.dot(numpy.log(h)) + (1.0 - y.T).dot(numpy.log(1.0 - h))
-    J_reg2 = theta[1:]**2
-    J_reg1 = theta[1:]
-    cost = (-1.0 / m) * (J.sum()) + LAMBDA2 * J_reg2.sum() + LAMBDA1 * J_reg1.sum()
+    cost = (-1.0 / m) * (J.sum())
     return cost
       
 def predict(X_row, thetas):
+    ''' This method applies the optimized model to the sample X_row, with the theta values found after optimizing the cost function, to predict the result.
+    
+    Args:
+        X_row: a sample from the data set
+        theta: vector containing the theta values
+        
+    Returns:
+        The class predicted for the sample in X_row, using the given theta values. We are doing one-vs-all prediction, so each set of thetas will be used to 
+        make a prediction for a sample, and the highest prediction will be returned as the most likely one.
+    '''
     max_predict = 0
     max_class = 0
     for k in range(len(thetas)):
@@ -38,6 +70,14 @@ def predict(X_row, thetas):
     return max_class
     
 def check_test_data(test_X, test_y, thetas, classes):
+    ''' This method applies the optimized model to the test data set, with the theta values found after optimizing the cost function. 
+    Prints out the RMSE.
+    
+    Args:
+        test_X: the test data set
+        test_y: the test set's true results
+        theta: vector containing the theta values
+    '''        
     correct = 0
     for i in range(len(test_X)):        
         predicted_class = predict(test_X[i], thetas)
@@ -59,11 +99,12 @@ if __name__ == "__main__":
     input_literal_columns = [0] * 4
     input_label_mapping = {}
     output_literal = True
-    output_label_mapping = {'Iris-versicolor': 0, 'Iris-setosa': 0, 'Iris-virginica': 1}
+    output_label_mapping = {'Iris-versicolor': 0, 'Iris-setosa': 1, 'Iris-virginica': 2}
     (train_X, train_y, test_X, test_y) = datareader.readInputData(input_file, input_test_file, custom_delimiter, 
         proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
     print "Parsing complete!\n"
     
+    print train_y
     print "Optimizing...\n"
     initial_train_y = train_y
     thetas = []
