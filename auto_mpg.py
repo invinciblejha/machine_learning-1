@@ -6,11 +6,30 @@ Date: 01.05.2012
 import csv, datareader, math, numpy, random, scipy.optimize
 
 def compute_hypothesis(X_row, theta):
+    ''' This method computes the hypothesis for the sample X_row, with the current theta values.
+    
+    Args:
+        X_row: a sample from the data set
+        theta: vector containing the theta values
+        
+    Returns:
+        The value of the hypothesis for the given data sample and theta values.
+    '''
     theta.shape = (1, X_row.size)
     h_theta = X_row.dot(theta.T)
     return h_theta[0]
 
 def computeCost(theta, X, y):
+    ''' This method computes the cost for the data set X and theta values w.r.t. the target values y
+    
+    Args:
+        X: the data set
+        theta: vector containing the theta values
+        y: vector containing the true cost for the samples in the data set
+
+    Returns:
+        A vector containing cost values for each sample in X, for the given theta values and true costs in y.
+    '''
     m = y.size
     h = X.dot(theta.T)
     J =  (h-y)**2
@@ -18,10 +37,28 @@ def computeCost(theta, X, y):
     return cost
       
 def predict(X_row, theta):
+    ''' This method applies the optimized model to the sample X_row, with the theta values found after optimizing the cost function, to predict the result.
+    
+    Args:
+        X_row: a sample from the data set
+        theta: vector containing the theta values
+        
+    Returns:
+        The value predicted for the sample in X_row, using the given theta values.
+    '''
     predicted_y = compute_hypothesis(X_row, theta)
     return predicted_y
     
 def check_test_data(test_X, test_y, theta):
+    ''' This method applies the optimized model to the test data set, with the theta values found after optimizing the cost function. 
+    In this case, for each sample in the test set, the difference between the predicted value and the true value is computed as:
+    abs(predicted_value - actual_value))/100
+    
+    Args:
+        test_X: the test data set
+        test_y: the test set's true results
+        theta: vector containing the theta values
+    '''        
     for i in range(len(test_X)):
         prediction = predict(test_X[i], theta)
         delta = float(math.fabs(prediction - test_y[i]))/100
