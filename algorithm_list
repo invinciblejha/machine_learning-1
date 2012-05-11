@@ -7,3 +7,4 @@ List of algorithms and data sets implemented in https://github.com/acgrama/machi
 - iris_bfgs_nclass.py Logistic regression classification on the "Iris" data set, discriminates all 3 classes
 - iris_gradient_2class.py Logistic regression classification on the "Iris" data set, with manually implemented gradient descent for cost function optimization
 - mushrooms_bfgs.py Logistic regression classification on the "Mushroom" data set
+- plants_kmeans.py k_means clustering on the "Plants" data set
