@@ -1,5 +1,8 @@
 '''
 Linear regression on the "Auto MPG" data set (http://archive.ics.uci.edu/ml/datasets/Auto+MPG)
+The model is optimized by applying the BFGS method.
+The optimized model is applied for each sample in the test set; the difference between the predicted value and the true value is computed as: abs(predicted_value - actual_value))/100
+
 Author: AC Grama http://acgrama.blogspot.com
 Date: 01.05.2012
 '''

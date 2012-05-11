@@ -30,7 +30,7 @@ def computeCost(X, y, theta):
     J_reg2 = theta[1:]**2
     J_reg1 = theta[1:]
     cost = (-1.0 / m) * (J.sum()) + LAMBDA2 * J_reg2.sum() + LAMBDA1 * J_reg1.sum()
-    print "Cost: ", cost#, " J_part1=", J_part1, ", J_part2=", J_part2
+#    print "Cost: ", cost#, " J_part1=", J_part1, ", J_part2=", J_part2
     return cost
     
 def gradientDescent(X, y, theta):
@@ -66,7 +66,7 @@ def check_test_data(test_X, test_y, theta):
     correct = 0
     for i in range(len(test_X)):
         prediction = predict(test_X[i], theta)
-        #print "Predicted ", prediction, ", actual ", test_y[i]
+        print "Predicted ", prediction, ", actual ", test_y[i]
         if prediction == test_y[i]:
             correct += 1
     print "Correct predictions: ", correct, "/", len(test_X)
@@ -89,6 +89,7 @@ if __name__ == "__main__":
         proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
     print "Parsing complete!\n"
 
+    print "Optimizing using gradient descent...\n"
     m = train_y.size
     theta = numpy.zeros((train_X.shape[1], 1))
 

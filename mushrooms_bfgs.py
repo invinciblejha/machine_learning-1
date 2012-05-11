@@ -1,17 +1,32 @@
 '''
 Logistic regression classification on the "Mushrooms" data set (http://archive.ics.uci.edu/ml/datasets/Mushroom)
+
 Author: AC Grama http://acgrama.blogspot.com
 Date: 24.04.2012
 '''
 import csv, datareader, math, mlpy, matplotlib.pyplot as plt, numpy, random, scipy.optimize
 
-LAMBDA1 = 0
-LAMBDA2 = 0
-
 def sigmoid(val):
+    ''' This method computes the sigmoid function value for the given parameter
+    
+    Args:
+        val: input parameter
+        
+    Returns:
+        The value of the sigmoid function for the given parameter.
+    '''
     return 1.0 / (1.0 + numpy.e ** (-1.0 * val))
     
 def compute_hypothesis(X_row, theta):
+    ''' This method computes the hypothesis for the sample X_row, with the current theta values.
+    
+    Args:
+        X_row: a sample from the data set
+        theta: vector containing the theta values
+        
+    Returns:
+        The value of the hypothesis for the given data sample and theta values.
+    '''
     theta = numpy.array(theta)
     X_row = numpy.array(X_row)
     theta.shape = (1, X_row.size)
@@ -19,20 +34,37 @@ def compute_hypothesis(X_row, theta):
     return h_theta[0]
 
 def computeCost(theta, X, y):
+    ''' This method computes the cost for the data set X and theta values w.r.t. the target values y
+    
+    Args:
+        X: the data set
+        theta: vector containing the theta values
+        y: vector containing the true cost for the samples in the data set
+
+    Returns:
+        A vector containing cost values for each sample in X, for the given theta values and true costs in y.
+    '''
     new_theta = numpy.array(theta)
     new_X = numpy.array(X)
     new_y = numpy.array(y)
     m = new_y.size
-    h = sigmoid(new_X.dot(new_theta.T)) # For each sample, a h_theta value
+    h = sigmoid(new_X.dot(new_theta.T))
     new_h = numpy.array(h)
-    J = new_y.T.dot(numpy.log(new_h)) + (1.0 - new_y.T).dot(numpy.log(1.0 - new_h)) # For each sample, a J_cost value
-    J_reg2 = new_theta[1:]**2
-    J_reg1 = new_theta[1:]
-    cost = (-1.0 / m) * (J.sum() + LAMBDA1 * J_reg1.sum() + LAMBDA2 * J_reg2.sum())
-    print "Cost: ", cost
+    J = new_y.T.dot(numpy.log(new_h)) + (1.0 - new_y.T).dot(numpy.log(1.0 - new_h))
+    cost = (-1.0 / m) * J.sum()
+#    print "Cost: ", cost
     return cost
       
 def predict(X_row, theta):
+    ''' This method applies the optimized model to the sample X_row, with the theta values found after optimizing the cost function, to predict the result.
+    
+    Args:
+        X_row: a sample from the data set
+        theta: vector containing the theta values
+        
+    Returns:
+        The class predicted for the sample in X_row, using the given theta values.
+    '''
     predicted_y = compute_hypothesis(X_row, theta)
     if predicted_y >= 0.5:
         return 1
@@ -40,6 +72,13 @@ def predict(X_row, theta):
         return 0
     
 def check_test_data(test_X, test_y, theta):
+    ''' This method applies the optimized model to the test data set, with the theta values found after optimizing the cost function. 
+    
+    Args:
+        test_X: the test data set
+        test_y: the test set's true results
+        theta: vector containing the theta values
+    '''        
     correct = 0
     for i in range(len(test_X)):
         prediction = predict(test_X[i], theta)
@@ -49,9 +88,9 @@ def check_test_data(test_X, test_y, theta):
     print "Correct predictions: ", correct, "/", len(test_X)
 
 def plot_data(X, y):
-    pca = mlpy.PCA() # new PCA instance
-    pca.learn(X) # learn from data
-    z = pca.transform(X, k=2) # embed x into the k=2 dimensional subspace
+    pca = mlpy.PCA()
+    pca.learn(X)
+    z = pca.transform(X, k=2)
 
     plt.set_cmap(plt.cm.Paired)
     fig1 = plt.figure(1)
@@ -82,8 +121,10 @@ if __name__ == "__main__":
     (train_X, train_y, test_X, test_y) = datareader.readInputData(input_file, input_test_file, custom_delimiter, proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
     print "Parsing complete!\n"
    
-    plot_data(train_X, train_y)
+    # Uncomment the following line to use PCA and to plot the training data set
+    #plot_data(train_X, train_y)
    
+    print "Optimizing...\n"
     initial_values = numpy.zeros((len(train_X[0]), 1))
     myargs = (train_X, train_y)
     theta = scipy.optimize.fmin_bfgs(computeCost, x0=initial_values, args=myargs)

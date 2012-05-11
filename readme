@@ -1,11 +1,22 @@
-Author: AC Grama http://acgrama.blogspot.com
-Contents: Implementations for various ML algorithms, mainly to fixate knowledge gathered from Stanford ML class and go beyond.
-Language: Python 2.7
+--------
+Author:
+-------- 
+AC Grama http://acgrama.blogspot.com
 
-How to run: 
+----------
+Contents:
+-----------
+Implementations for various ML algorithms, mainly to fixate knowledge gathered from Stanford ML class and go beyond.
 
+---------------------------
+Language & Prerequisites:
+--------------------------- 
+Python 2.7
+Modules: matplotlib, mlpy, numpy, scipy.
+
+-------------
+How to run:
+------------- 
 1. Select a file from algorithm_list
-
 2. Download data set mentioned in file header and copy it to same folder as python file.
-
 3. Run "python filename.py" in the shell.

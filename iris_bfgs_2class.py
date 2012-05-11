@@ -1,6 +1,7 @@
 '''
 Logistic regression classification on the "Iris" data set (http://archive.ics.uci.edu/ml/datasets/Iris)
-Uses scipy,optimize.fmin_bfgs for minimizing the cost function.
+Uses scipy.optimize.fmin_bfgs for minimizing the cost function. Uses the mlpy.PCA() function to plot the PCA results.
+
 Author: AC Grama http://acgrama.blogspot.com
 Date: 24.04.2012
 '''
@@ -19,12 +20,12 @@ def compute_hypothesis(X_row, theta):
 
 def computeCost(theta, X, y):
     m = y.size
-    h = sigmoid(X.dot(theta.T)) # For each sample, a h_theta value
+    h = sigmoid(X.dot(theta.T))
     
     J =  y.T.dot(numpy.log(h)) + (1.0 - y.T).dot(numpy.log(1.0 - h))
     J_reg2 = theta[1:]**2
     J_reg1 = theta[1:]
-    cost = (-1.0 / m) * (J.sum()) + LAMBDA2 * J_reg2.sum() + LAMBDA1 * J_reg1.sum()
+    cost = (-1.0 / m) * (J.sum())# + LAMBDA2 * J_reg2.sum() + LAMBDA1 * J_reg1.sum()
     return cost
       
 def predict(X_row, theta):
@@ -38,15 +39,15 @@ def check_test_data(test_X, test_y, theta):
     correct = 0
     for i in range(len(test_X)):
         prediction = predict(test_X[i], theta)
-        #print "Predicted ", prediction, ", actual ", test_y[i]
+        print "Predicted ", prediction, ", actual ", test_y[i]
         if prediction == test_y[i]:
             correct += 1
     print "Correct predictions: ", correct, "/", len(test_X)
 
 def plot_data(X, y):
-    pca = mlpy.PCA() # new PCA instance
-    pca.learn(X) # learn from data
-    z = pca.transform(X, k=2) # embed x into the k=2 dimensional subspace
+    pca = mlpy.PCA()
+    pca.learn(X)
+    z = pca.transform(X, k=2)
 
     plt.set_cmap(plt.cm.Paired)
     fig1 = plt.figure(1)
@@ -74,7 +75,8 @@ if __name__ == "__main__":
         proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
     print "Parsing complete!\n"
     
-    plot_data(train_X, train_y)
+    # Uncomment the following line to use PCA and to plot the training data set
+    #plot_data(train_X, train_y)
         
     print "Optimizing...\n"
     initial_thetas = numpy.zeros((train_X.shape[1], 1))

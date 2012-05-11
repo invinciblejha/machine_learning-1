@@ -1,18 +1,13 @@
 '''
 Logistic regression classification on the "Internet Classification" data set (http://archive.ics.uci.edu/ml/datasets/Internet+Advertisements)
+The model is optimized by applying the BFGS method.
+
 Author: AC Grama http://acgrama.blogspot.com
 Date: 24.04.2012
 '''
 import datareader, math, numpy, random, scipy, scipy.optimize, time
 
 iter = 0
-
-class TooManyIterationsException(Exception):
-    def __init__(self, value):
-        self.value = value
-        
-    def __str__(self):
-        return repr(self.value)
 
 def sigmoid(val):
     return 1.0 / (1.0 + numpy.e ** (-1.0 * val))
@@ -23,13 +18,8 @@ def compute_hypothesis(X_row, theta):
     return h_theta[0]
 
 def computeCost(theta, X, y):
-    global iter
-    iter += 1
-#    if iter > 10000:
-#        raise TooManyIterationsException(iter)
-#        
     m = y.size
-    h = sigmoid(X.dot(theta.T)) # For each sample, a h_theta value
+    h = sigmoid(X.dot(theta.T))
     
     J_part1 = y.T.dot(numpy.log(h))
     J_part2 = (1.0 - y.T).dot(numpy.log(1.0 - h))
@@ -37,9 +27,7 @@ def computeCost(theta, X, y):
     J_reg2 = theta[1:]**2
     J_reg1 = theta[1:]
     cost = (-1.0 / m) * (J.sum()) + LAMBDA2 * J_reg2.sum() + LAMBDA1 * J_reg1.sum()
-    print "Iteration", iter, " - Cost: ", cost#, " J_part1=", J_part1, ", J_part2=", J_part2
-    print "Theta", theta[:4]
-    print "\n\n"
+    #print "Iteration", iter, " - Cost: ", cost#, " J_part1=", J_part1, ", J_part2=", J_part2
     return cost
        
 def predict(X_row, theta):
@@ -57,14 +45,6 @@ def check_test_data(test_X, test_y, thetas, classes):
         if classes[predicted_class] == test_y[i]:
             correct += 1
     print "Correct predictions: ", correct, "/", len(test_X)
-    
-def lambdas_range():
-    my_range = [0.01]
-    current = 0.02
-    while current < 20:
-        my_range.append(current)
-        current *= 2
-    return my_range
     
 if __name__ == "__main__":
     print "Started at: ", time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
@@ -86,19 +66,7 @@ if __name__ == "__main__":
     
     initial_thetas = numpy.zeros((train_X.shape[1], 1))
     myargs = (train_X, train_y)
-    global LAMBDA1, LAMBDA2
-    my_range = lambdas_range()
-    
-#    for LAMBDA1 in my_range:
-#        for LAMBDA2 in my_range:
-#            try:
-#                iter = 0
-#                print "Beginning optimization of cost function for LAMBDA1=", LAMBDA1, " and LAMBDA2=", LAMBDA2
-#                theta = scipy.optimize.fmin_bfgs(computeCost, x0=initial_thetas, args=myargs, maxiter=1)            
-#                print "Optimization complete!"
-#            except TooManyIterationsException as e:
-#                print "\n"
-            
+         
     LAMBDA1 = 0.1
     LAMBDA2 = 0.2
     print "Beginning optimization of cost function for LAMBDA1=", LAMBDA1, " and LAMBDA2=", LAMBDA2
