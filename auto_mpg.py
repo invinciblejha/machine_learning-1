@@ -74,7 +74,7 @@ def check_test_data(test_X, test_y, theta):
 if __name__ == "__main__":
     print "Parsing input data..."
     
-    input_file = 'auto-mpg.data' 
+    input_file = 'auto_mpg.data' 
     input_test_file = ''
     custom_delimiter = ' ' 
     proportion_factor = float(1)/3

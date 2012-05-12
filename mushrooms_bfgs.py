@@ -102,7 +102,7 @@ def plot_data(X, y):
 
 if __name__ == "__main__":
     print "Parsing input data..."
-    input_file = 'agaricus-lepiota.data' 
+    input_file = 'mushrooms_bfgs.data' 
     input_test_file = ''
     custom_delimiter = ',' 
     proportion_factor = float(1)/3
