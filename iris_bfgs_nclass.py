@@ -100,7 +100,7 @@ if __name__ == "__main__":
     input_label_mapping = {}
     output_literal = True
     output_label_mapping = {'Iris-versicolor': 0, 'Iris-setosa': 1, 'Iris-virginica': 2}
-    (train_X, train_y, test_X, test_y) = datareader.readInputData(input_file, input_test_file, custom_delimiter, 
+    (train_X, train_y, test_X, test_y) = datareader.readInputData(input_file, input_test_file, True, custom_delimiter, 
         proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
     print "Parsing complete!\n"
     

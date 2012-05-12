@@ -6,7 +6,7 @@ Date: 24.04.2012
 '''
 import csv, datareader, math, numpy, random
 
-ITERATIONS = 1500
+ITERATIONS = 1000
 ALPHA = 0.01
 LAMBDA1 = 0.1
 LAMBDA2 = 0.2
@@ -29,7 +29,7 @@ def computeCost(X, y, theta):
     J =  J_part1 + J_part2
     J_reg2 = theta[1:]**2
     J_reg1 = theta[1:]
-    cost = (-1.0 / m) * (J.sum()) + LAMBDA2 * J_reg2.sum() + LAMBDA1 * J_reg1.sum()
+    cost = (-1.0 / m) * (J.sum()) #+ LAMBDA2 * J_reg2.sum() + LAMBDA1 * J_reg1.sum()
 #    print "Cost: ", cost#, " J_part1=", J_part1, ", J_part2=", J_part2
     return cost
     
@@ -66,7 +66,7 @@ def check_test_data(test_X, test_y, theta):
     correct = 0
     for i in range(len(test_X)):
         prediction = predict(test_X[i], theta)
-        print "Predicted ", prediction, ", actual ", test_y[i]
+#        print "Predicted ", prediction, ", actual ", test_y[i]
         if prediction == test_y[i]:
             correct += 1
     print "Correct predictions: ", correct, "/", len(test_X)
@@ -85,10 +85,9 @@ if __name__ == "__main__":
     input_label_mapping = {}
     output_literal = True
     output_label_mapping = {'Iris-versicolor': 0, 'Iris-setosa': 1, 'Iris-virginica': 0}
-    (train_X, train_y, test_X, test_y) = datareader.readInputData(input_file, input_test_file, custom_delimiter, 
+    (train_X, train_y, test_X, test_y) = datareader.readInputData(input_file, input_test_file, True, custom_delimiter, 
         proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
         
-    print train_y
     print "Parsing complete!\n"
 
     print "Optimizing using manually-implemented gradient descent (so it will take a while)\n"
