@@ -1,10 +1,8 @@
 Author: AC Grama http://acgrama.blogspot.com
 
 List of algorithms and data sets implemented in https://github.com/acgrama/machine_learning:
-- ads_bfgs.py Logistic regression classification on the "Internet Classification" data set
 - auto_mpg.py Linear regression on the "Auto MPG" data set 
 - iris_bfgs_2class.py Logistic regression classification on the "Iris" data set, discriminates 1-vs-rest
 - iris_bfgs_nclass.py Logistic regression classification on the "Iris" data set, discriminates all 3 classes
 - iris_gradient_2class.py Logistic regression classification on the "Iris" data set, with manually implemented gradient descent for cost function optimization
 - mushrooms_bfgs.py Logistic regression classification on the "Mushroom" data set
-- plants_kmeans.py k_means clustering on the "Plants" data set

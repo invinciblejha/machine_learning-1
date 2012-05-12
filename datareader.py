@@ -58,24 +58,24 @@ def parse_input_no_conversion(input_file, custom_delimiter, input_columns, outpu
         A set (X, y) containing the input data.    
     '''
     data_reader = csv.reader(open(input_file, 'rb'), delimiter=custom_delimiter)
-    
     if not is_test:
         X = []
         y = []
-        index = 0
         for row in data_reader:
             line_x = [1] # Add the X0=1
             while '' in row:
                 row.remove("")
             if input_columns != []:
                 for i in input_columns:
-                    line_x.append(row[i])
+                    if i < len(row):
+                        line_x.append(row[i])
                 X.append(line_x)
                 y.append(row[output_column])
             else:
                 for i in range(len(row)):
                     line_x.append(row[i])
                 X.append(line_x)
+                print X
         
         (X, y) = randomize_inputs(X, y)
     else:
@@ -181,7 +181,13 @@ def readInputData(input_file, input_test_file, convert_literals, custom_delimite
         train_y = y[splice_index:]
         test_X = X[:splice_index]
         test_y = y[:splice_index]
-        return (numpy.array(train_X), numpy.array(train_y), numpy.array(test_X), numpy.array(test_y))
+        if convert_literals:
+            return (numpy.array(train_X), numpy.array(train_y), numpy.array(test_X), numpy.array(test_y))
+        else:
+            return (train_X, train_y, test_X, test_y)
     else: # Take test values from input_test_file -- we assume same format as input_file!
         (test_X, test_y) = parse_input(input_test_file, custom_delimiter, input_columns, output_column, True, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
-        return (numpy.array(X), numpy.array(y), numpy.array(test_X), numpy.array(test_y))
+        if convert_literals:
+            return (numpy.array(X), numpy.array(y), numpy.array(test_X), numpy.array(test_y))
+        else:
+            return (X, y, test_X, test_y)

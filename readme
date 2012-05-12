@@ -18,5 +18,4 @@ Modules: matplotlib, mlpy, numpy, scipy.
 How to run:
 ------------- 
 1. Select a file from algorithm_list
-2. Download data set mentioned in file header and copy it to same folder as python file.
-3. Run "python filename.py" in the shell.
+2. Run "python filename.py" in the shell.

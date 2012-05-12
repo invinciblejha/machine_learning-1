@@ -1,10 +1,15 @@
 # Input data files #
 ##############
 *.csv
-*.data
 *.names
 *.txt
 
 # Compiled Python #
 ################
 *.pyc
+
+# Work in progress #
+################
+ad.data
+ads_bfgs.py
+plants*.*
