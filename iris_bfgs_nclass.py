@@ -87,6 +87,8 @@ def check_test_data(test_X, test_y, thetas, classes):
     print "Correct predictions: ", correct, "/", len(test_X)
     
 if __name__ == "__main__":
+    print "Logistic regression classification of N classes (one-vs-all method). Applied to Iris dataset.\n"
+    raw_input("Press Enter to continue...")
     print "Parsing input data..."
     
     input_file = 'iris.data' 
@@ -104,7 +106,6 @@ if __name__ == "__main__":
         proportion_factor, split, input_columns, output_column, input_literal_columns, input_label_mapping, output_literal, output_label_mapping)
     print "Parsing complete!\n"
     
-    print train_y
     print "Optimizing...\n"
     initial_train_y = train_y
     thetas = []

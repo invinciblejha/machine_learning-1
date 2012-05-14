@@ -101,6 +101,9 @@ def plot_data(X, y):
     plt.show()
 
 if __name__ == "__main__":
+    print "Logistic regression classification on the 'Mushrooms' data set"
+    raw_input("Press Enter to continue...")
+     
     print "Parsing input data..."
     input_file = 'mushrooms_bfgs.data' 
     input_test_file = ''
