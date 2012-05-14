@@ -65,13 +65,16 @@ def check_test_data(test_X, test_y, theta):
     for i in range(len(test_X)):
         prediction = predict(test_X[i], theta)
         sum += (prediction - test_y[i])**2
-#        delta = float(math.fabs(prediction - test_y[i]))/100
-#        print "Predicted value= %.2f" % prediction, ", actual value= ", test_y[i], ", difference in percents of actual value=%.3f" % delta
     sum /= test_X.shape[0]
     rmse = math.sqrt(sum)
     print "Root Mean Squared Error= %.2f" % rmse
     
 if __name__ == "__main__":
+    print "Linear regression on the 'Auto MPG' data set."
+    print "The model is optimized by applying the BFGS method."
+    print "The optimized model is applied for each sample in the test set and the RMSE is computed.\n"
+    raw_input("Press Enter to continue...")
+
     print "Parsing input data..."
     
     input_file = 'auto_mpg.data' 
