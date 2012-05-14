@@ -19,3 +19,5 @@ How to run:
 ------------- 
 1. Select a file from algorithm_list
 2. Run "python filename.py" in the shell.
+
+NB: Run the algorithms with the provided data set files (do not download the raw data sets from the indicated URLs), as they have been "cleaned up" for the data parser used by these algorithms. There might be parsing errors otherwise.
